@@ -3,11 +3,16 @@ import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
 import Job from './Job'
 
 export default class Quotation extends BaseModel {
+  public static table = 'quotations'
+
   @column({ isPrimary: true })
   public id: number
 
   @belongsTo(() => Job)
   public job: BelongsTo<typeof Job>
+
+  @column()
+  public jobId: number
 
   @column()
   public status: string

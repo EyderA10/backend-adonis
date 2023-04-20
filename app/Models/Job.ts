@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, HasMany, column, computed, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasMany, afterCreate, column, computed, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Drive from '@ioc:Adonis/Core/Drive'
 import Quotation from './Quotation'
 
@@ -43,7 +43,7 @@ export default class Job extends BaseModel {
   public budget: number
 
   @column({ serializeAs: null })
-  public images: string[]
+  public images: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -51,9 +51,16 @@ export default class Job extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @computed()
+  @afterCreate()
+  public static async saveQuotation({ id }: Job) {
+    const quotation = new Quotation()
+    quotation.jobId = id
+    await quotation.save()
+  }
+
+  @computed({serializeAs: null})
   public get imageUrls() {
-    return this.getImageUrls(this.images)
+    return this.getImageUrls(this.images.split(','))
   }
 
   async getImageUrls (images: string[]) {
@@ -67,4 +74,5 @@ export default class Job extends BaseModel {
 
     return imageUrls
   }
+
 }

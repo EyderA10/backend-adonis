@@ -16,7 +16,7 @@ export default class extends BaseSchema {
       table.string('type_clothing', 200)
       table.text('description')
       table.integer('budget', 50).nullable()
-      table.json('images')
+      table.string('images')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })
