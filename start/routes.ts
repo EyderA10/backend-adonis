@@ -27,4 +27,6 @@ Route.group(() => {
   Route.post('/post-job', 'JobsController.postJobs')
   Route.get('/get-jobs', 'JobsController.getJobs')
   Route.get('/get-job/:id', 'JobsController.getJobDetail')
+  Route.get('/jobs', 'JobsController.getFilterJob')
+  Route.post('/send-quote/:id', 'QuotationsController.sendQuoteByEmail')
 }).prefix('api')

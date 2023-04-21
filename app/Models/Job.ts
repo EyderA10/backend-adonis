@@ -45,18 +45,14 @@ export default class Job extends BaseModel {
   @column({ serializeAs: null })
   public images: string
 
+  @column()
+  public status: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
-
-  @afterCreate()
-  public static async saveQuotation({ id }: Job) {
-    const quotation = new Quotation()
-    quotation.jobId = id
-    await quotation.save()
-  }
 
   @computed({serializeAs: null})
   public get imageUrls() {

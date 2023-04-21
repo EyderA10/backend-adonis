@@ -15,10 +15,13 @@ export default class Quotation extends BaseModel {
   public jobId: number
 
   @column()
-  public status: string
+  public quotations: number
 
   @column()
-  public quotations: number
+  public comment: string | undefined | null
+
+  @column()
+  public price: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

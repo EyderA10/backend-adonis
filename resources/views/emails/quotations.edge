@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quotation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #333;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      font-weight: normal;
+    }
+    p {
+      margin: 0 0 1em;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: #f7f7f7;
+      border: 1px solid #ddd;
+    }
+    .header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+    }
+    .header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+    .body {
+      padding: 20px;
+    }
+    .body h2 {
+      font-size: 20px;
+      margin: 0 0 10px;
+    }
+    .body p {
+      margin-bottom: 20px;
+    }
+    .footer {
+      background-color: #ddd;
+      color: #333;
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Quotation</h1>
+    </div>
+    <div class="body">
+      <h2>Dear {{ customerName }},</h2>
+      <p>You have received a new quotation for this Job: <strong>{{ typeClothing }}</strong>.</p>
+      <p>Job Description: <strong>{{ description }}</strong>.</p>
+      <p>Quotation: <strong>{{ price }} $</strong>.</p>
+      <p>Comments: {{ comments }}</p>
+    </div>
+    <div class="footer">
+      <p>Thank you for trusting in Meydit.</p>
+    </div>
+  </div>
+</body>
+</html>

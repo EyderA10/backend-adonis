@@ -17,6 +17,7 @@ export default class extends BaseSchema {
       table.text('description')
       table.integer('budget', 50).nullable()
       table.string('images')
+      table.string('status', 50).defaultTo('Available').nullable()
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

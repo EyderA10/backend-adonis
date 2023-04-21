@@ -1,10 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Drive from '@ioc:Adonis/Core/Drive';
 import Logger from '@ioc:Adonis/Core/Logger';
 import { cuid } from '@ioc:Adonis/Core/Helpers'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Job from 'App/Models/Job';
-import Quotation from 'App/Models/Quotation';
 export default class JobsController {
 
   public async postJobs({ request, response }: HttpContextContract) {
@@ -63,7 +61,7 @@ export default class JobsController {
 
   public async getJobs({ response }: HttpContextContract) {
     try {
-      const jobs = await Quotation.query().preload('job')
+      const jobs = await Job.query().preload('quotations')
       return response.status(200).json({
         status: 'success',
         code: 200,
@@ -82,15 +80,52 @@ export default class JobsController {
   public async getJobDetail({ params, response }: HttpContextContract) {
     try {
       const { id } = params
-      const job = await Job.find(id)
+      const job: Job | null = await Job.find(id)
+      if (job === null) return response.status(404).json({
+        status: 'failed',
+        code: 404,
+        message: `Does not exist any job by this ${id}`
+      })
+      await job?.load('quotations')
       const imageUrls = await job?.imageUrls
       return response.status(200).json({
         status: 'success',
         code: 200,
-        data: {...job?.$attributes, imageUrls}
+        data: { ...job.serializeAttributes(), ...job.serializeRelations(), imageUrls }
       })
     } catch (error) {
       Logger.error({ err: new Error(error.message) }, 'Error to attempt to get a job')
+      return response.status(500).json({
+        status: 'failed',
+        code: 500,
+        error
+      })
+    }
+  }
+
+  public async getFilterJob({ request, response }: HttpContextContract) {
+    try {
+      const queryParams = request.qs()
+      const query = Job.query()
+      if (!('location' in queryParams || 'typeClothing' in queryParams)) return response.status(400).json({
+        status: 'failed',
+        code: 400,
+        message: 'you must provide location or typeClothing query'
+      })
+      if (queryParams.location) {
+        query.where('state', queryParams.location)
+      }
+      if (queryParams.typeClothing) {
+        query.where('type_clothing', queryParams.typeClothing)
+      }
+      const jobs = await query.preload('quotations').exec()
+      return response.status(200).json({
+        status: 'success',
+        code: 200,
+        data: jobs
+      })
+    } catch (error) {
+      Logger.error({ err: new Error(error.message) }, 'Error to attempt to filter a job')
       return response.status(500).json({
         status: 'failed',
         code: 500,
