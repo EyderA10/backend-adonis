@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, HasMany, afterCreate, column, computed, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasMany, column, computed, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Drive from '@ioc:Adonis/Core/Drive'
 import Quotation from './Quotation'
 
